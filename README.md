@@ -1,2 +1,1 @@
-# 語順調査「順調」
-## Japanese constituent order project "JyunCho"
+# "JyunCho" — Japanese constituent order project
