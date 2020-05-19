@@ -1,0 +1,162 @@
+---
+title: "[JyunCho] Acceptability Experiment Stimuli & Lists"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reactable)
+library(dplyr)
+```
+
+# 1 Stimuli
+
+## 1.1 Order
+
+```{r order_stimuli, include=T, eval=T, echo=F}
+
+df.constituent_order <- read.csv('stimuli/stimuli_constituent-order.csv') %>% select(-experiment)
+reactable(df.constituent_order, 
+          sortable=TRUE, showSortable=TRUE, search=TRUE, filter=TRUE, 
+          columns = list(list      = colDef(maxWidth=50), 
+                         item      = colDef(maxWidth=50), 
+                         position  = colDef(name="pos", maxWidth=50), 
+                         order     = colDef(maxWidth=50), 
+                         audioFile = colDef(minWidth=125), 
+                         sentence  = colDef(minWidth=275)))
+
+```
+
+## 1.2 Island sub-experiment
+
+```{r island_stimuli, include=T, eval=T, echo=F}
+
+df.island_stimuli <- read.csv('stimuli/stimuli_islands.csv') %>% select(-experiment)
+reactable(df.island_stimuli, 
+          sortable=TRUE, showSortable=TRUE,  search=TRUE, filter=TRUE, 
+          columns = list(list           = colDef(maxWidth=50), 
+                         item           = colDef(maxWidth=50), 
+                         position       = colDef(name="pos", maxWidth=50),
+                         moveType       = colDef(maxWidth=100), 
+                         audioFile      = colDef(minWidth=125), 
+                         evidentialPol  = colDef(name="evidential", minWidth=150),
+                         verbMeaning    = colDef(minWidth=150),
+                         mainClauseVerb = colDef(minWidth=150),
+                         mainClauseObj  = colDef(minWidth=150),
+                         relClauseVerb  = colDef(minWidth=150),
+                         relClauseObj   = colDef(minWidth=150),
+                         relClauseSubj  = colDef(minWidth=150),
+                         sentence       = colDef(minWidth=500)))
+```
+
+## 1.3 Fillers
+
+```{r filler_stimuli, include=T, eval=T, echo=F}
+
+df.filler_stimuli <- read.csv('stimuli/stimuli_fillers.csv') %>% select(-experiment, -nounTopicSource, -base)
+reactable(df.filler_stimuli, 
+          sortable=TRUE, showSortable=TRUE, search=TRUE, filter=TRUE, 
+          columns = list(item        = colDef(maxWidth=50), 
+                         grammatical = colDef(name="cond", maxWidth=75),
+                         audio       = colDef(minWidth=125), 
+                         sentence    = colDef(minWidth=350)))
+
+```
+
+# 2 Lists
+
+## 2.1 List 1
+
+```{r list1_stimuli, include=T, eval=T, echo=F}
+
+df.list1_stimuli <- read.csv('lists/list1.csv') %>% select(-list)
+reactable(df.list1_stimuli, 
+          sortable=TRUE, showSortable=TRUE, search=TRUE, filter=TRUE, 
+          columns = list(position     = colDef(name="pos", maxWidth=50), 
+                         experiment   = colDef(name="cond", maxWidth=100),
+                         item         = colDef(maxWidth=50), 
+                         condition    = colDef(maxWidth=150),
+                         subcondition = colDef(na = "–"), 
+                         audio         = colDef(minWidth=125)))
+
+```
+
+## 2.2 List 2
+
+```{r list2_stimuli, include=T, eval=T, echo=F}
+
+df.list2_stimuli <- read.csv('lists/list2.csv') %>% select(-list)
+reactable(df.list2_stimuli, 
+          sortable=TRUE, showSortable=TRUE, search=TRUE, filter=TRUE, 
+          columns = list(position     = colDef(name="pos", maxWidth=50), 
+                         experiment   = colDef(name="cond", maxWidth=100),
+                         item         = colDef(maxWidth=50), 
+                         condition    = colDef(maxWidth=150),
+                         subcondition = colDef(na = "–"), 
+                         audio         = colDef(minWidth=125)))
+
+```
+
+## 2.3 List 3
+
+```{r list3_stimuli, include=T, eval=T, echo=F}
+
+df.list3_stimuli <- read.csv('lists/list3.csv') %>% select(-list)
+reactable(df.list3_stimuli, 
+          sortable=TRUE, showSortable=TRUE, search=TRUE, filter=TRUE, 
+          columns = list(position     = colDef(name="pos", maxWidth=50), 
+                         experiment   = colDef(name="cond", maxWidth=100),
+                         item         = colDef(maxWidth=50), 
+                         condition    = colDef(maxWidth=150),
+                         subcondition = colDef(na = "–"), 
+                         audio         = colDef(minWidth=125)))
+
+```
+
+## 2.4 List 4
+
+```{r list4_stimuli, include=T, eval=T, echo=F}
+
+df.list4_stimuli <- read.csv('lists/list4.csv') %>% select(-list)
+reactable(df.list4_stimuli, 
+          sortable=TRUE, showSortable=TRUE, search=TRUE, filter=TRUE, 
+          columns = list(position     = colDef(name="pos", maxWidth=50), 
+                         experiment   = colDef(name="cond", maxWidth=100),
+                         item         = colDef(maxWidth=50), 
+                         condition    = colDef(maxWidth=150),
+                         subcondition = colDef(na = "–"), 
+                         audio         = colDef(minWidth=125)))
+
+```
+
+## 2.5 List 5
+
+```{r list5_stimuli, include=T, eval=T, echo=F}
+
+df.list5_stimuli <- read.csv('lists/list5.csv') %>% select(-list)
+reactable(df.list5_stimuli, 
+          sortable=TRUE, showSortable=TRUE, search=TRUE, filter=TRUE, 
+          columns = list(position     = colDef(name="pos", maxWidth=50), 
+                         experiment   = colDef(name="cond", maxWidth=100),
+                         item         = colDef(maxWidth=50), 
+                         condition    = colDef(maxWidth=150),
+                         subcondition = colDef(na = "–"), 
+                         audio         = colDef(minWidth=125)))
+
+```
+
+## 2.6 List 6
+
+```{r list6_stimuli, include=T, eval=T, echo=F}
+
+df.list6_stimuli <- read.csv('lists/list6.csv') %>% select(-list)
+reactable(df.list6_stimuli, 
+          sortable=TRUE, showSortable=TRUE, search=TRUE, filter=TRUE, 
+          columns = list(position     = colDef(name="pos", maxWidth=50), 
+                         experiment   = colDef(name="cond", maxWidth=100),
+                         item         = colDef(maxWidth=50), 
+                         condition    = colDef(maxWidth=150),
+                         subcondition = colDef(na = "–"), 
+                         audio         = colDef(minWidth=125)))
+
+```
