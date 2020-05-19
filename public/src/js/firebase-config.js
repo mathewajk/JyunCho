@@ -1,8 +1,8 @@
 // firebase-config.js
-// This file contains the data necessary to connect to your Firebase project.
+// This file contains the data necessary to connect to Firebase, plus some helpers.
 
 /******************************************************
- * FIREBASE CONFIGURATION - EDIT WITH YOUR DATA
+ * FIREBASE CONFIGURATION
  ******************************************************/
 
  /* apiKey - The public API key of the project.
@@ -16,14 +16,14 @@
  */
 
 var config = {
-    apiKey:        "AIzaSyAxyzEuaovcYmgNT3IELg6Ng7jdVOyx1do", // TODO: Your key goes here
-    databaseURL:   "https://ccclab-573ff.firebaseio.com/", // TODO
-    storageBucket: "gs://ccclab-573ff.appspot.com/"        // TODO
+    apiKey:        "", // TODO: API Key
+    databaseURL:   "https://jyuntyou.firebaseio.com/",
+    storageBucket: "gs://jyuntyou.appspot.com/"
 };
 
 
 /******************************************************
- * FIREBASE INITIALIZATION - NO NEED TO EDIT
+ * FIREBASE INITIALIZATION
  ******************************************************/
 
 firebase.initializeApp(config);
