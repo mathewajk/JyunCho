@@ -1,4 +1,8 @@
 .DS_Store
+
 audio/
 sound/
+
 firebase_site/public/src/vendor/jspsych-6.1.0/plugins/stock/
+
+firebase-debug.log
