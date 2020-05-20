@@ -2,7 +2,7 @@
     * @constructor
     * @param {Object} params - The experiment parameters from URL data and/or your data.json file.
     */
-  function BasicExperiment(params) {
+  function Experiment(params) {
 
     /** Hold the trials, instructions, etc. that make up the experiment.
      * @type {Array<object>}
