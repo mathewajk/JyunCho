@@ -105,7 +105,7 @@ function Experiment(params, firebaseStorage) {
   * Pre-experiment
   ****************************/
 
-  // Use this function to creat any trials that should appear before the main
+  // Use this function to create any trials that should appear before the main
   // experiment. For example, instuctions.
   var initPreExperiment = function() {
 
