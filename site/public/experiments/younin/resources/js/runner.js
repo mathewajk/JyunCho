@@ -1,62 +1,96 @@
-var dataRef;
+// runner.js
 
-/** A silly function to give users feedback while the experiment loads.
-*/
-function makeLoadingFun() {
-  if($('#load-text').html() === 'Loading experiment....')
-    $('#load-text').html('Loading experiment.');
-  else
-    $('#load-text').html($('#load-text').html() + '.');
-}
+// This file loads the stimuli in stimuli.json and initializes an Experiment
+// object.
 
-var loadInterval = setInterval(function() {
-  makeLoadingFun();
-}, 500);
+// The trials created by the Experiment are then send to jsPsych,
+// which runs the experiment.
 
-/** Load the experiment with an object as input.
-  * @param {object} json - Object contatining data from the experiment's JSON file.
-*/
-function loadExperimentFromJSON(json) {
-  var experiment = new BasicExperiment(_.extend(json, jsPsych.data.urlVariables()));
-  initializeExperiment(experiment);
-}
 
-/** Handle JSON errors.
-  * @param {string} textStatus - The status of the load attempt.
-  * @param {string} error - The error message.
-*/
-function error(d, textStatus, error) {
-  console.error("getJSON failed, status: " + textStatus + ", error: " + error);
-}
+/*************************************************************************
+* ON DOCUMENT READY
+**************************************************************************/
 
-/** Attempt to load the experiment from JSON.
- * @param {string} file - The URL of the JSON file to load.
-*/
-function attemptLoad(file) {
-  $.getJSON(file, loadExperimentFromJSON).fail(error);
-}
+$( document ).ready(function() {
 
-/** Initialize the experiment with a successfully-created BasicExperiment object.
- * @param {object} BasicExperiment - The instance of the experiment.
-*/
-function initializeExperiment(experiment) {
-  var d = new Date();
-  var date_string = [d.getFullYear(), d.getMonth() + 1, d.getDate()].join('-');
-  var vars = jsPsych.data.urlVariables();
+  urlVars = jsPsych.data.urlVariables();
 
-  experiment.createTimeline();
-  experiment.addPropertiesTojsPsych();
+  getParticipantCompletion(urlVars.participantId, urlVars.experimentId)
+    .then(function(snapshot) {
+
+      if(snapshot.val() && snapshot.val().complete == 1) {
+        console.log('This participant has already completed the experiment!');
+        showUserError();
+      }
+
+      else {
+        console.log('This participant has not yet completed the experiment. :)');
+        loadStimuliAndRun("resources/data/stimuli.json");
+      }
+
+  });
+});
+
+
+/*************************************************************************
+* jsPSYCH RUNNER
+**************************************************************************/
+
+/* Calls jsPsych.init() to run the experiment
+ *
+ * experiment.getTimeline() returns the timeline created by the Experiment
+ * object, which is passed to jsPsych.
+ * experiment.onFinish() defines what jsPsych does once the experiment is done.
+ */
+
+function initializeJsPsych(experiment) {
+
+  experiment.createTimeline()
+  experiment.addPropertiesTojsPsych()
+  experiment.setStorageLocation()
 
   jsPsych.init({
     timeline: experiment.getTimeline(),
-    display_element: 'jspsych-target'
+    show_progress_bar: true,
+    display_element: 'jspsych-target',
+    on_finish: function() {
+      experiment.onFinish()
+    }
   });
-
-  $('#load-text').remove();
-  clearInterval(loadInterval);
 }
 
-$( document ).ready(function() {
-    var language = jsPsych.data.urlVariables().lang;
-    attemptLoad("resources/data/" + language + ".data.json");
-});
+
+/*************************************************************************
+* EXPERIMENT LOADER AND HELPER FUNCTIONS
+**************************************************************************/
+
+/* Try to load the JSON file
+ *
+ * On success - calls returnStimuli()
+ * On failure - displays an error message in the console
+ */
+function loadStimuliAndRun(file) {
+  $.getJSON(file, initializeExperimentWithStimuli).fail(showConsoleError);
+}
+
+/* Initialize an Experiment object with loaded stimuli and storage instance
+ * and send the experiment to jsPsych.
+ * All URL variables are also passed to the Experiment object.
+ */
+function initializeExperimentWithStimuli(json) {
+  var experiment = new Experiment(_.extend(json, jsPsych.data.urlVariables()),
+    storage);
+  initializeJsPsych(experiment);
+}
+
+function showConsoleError(d, textStatus, error) {
+  console.error("getJSON failed, status: " + textStatus + ", error: " + error);
+}
+
+function showUserError() {
+  $( '#jspsych-target' ).append($('<div>', {
+     id: 'error',
+     class: 'text-center',
+     html: '<p>It appears that you have previously completed a study that used the same data as, or similar data to, the study you are attempting to complete now. Unfortunately, we cannot allow the same person to participate in an experiment more than once. We apologize for the inconvenience, but we must ask that you return your HIT now. (This will not negatively impact your ability to participate in future experiments.)</p><p>If you believe that this message is in error, you can contact the lab at <a href="mailto:arkram@umich.edu">arkram@umich.edu</a>.</div>'
+   }));
+}
