@@ -1,59 +1,177 @@
-  /** Construct an instance of the BasicExperiment class.
-    * @constructor
-    * @param {Object} params - The experiment parameters from URL data and/or your data.json file.
-    */
-  function Experiment(params) {
+// experiment.js
 
-    /** Hold the trials, instructions, etc. that make up the experiment.
-     * @type {Array<object>}
-     */
+// This file defines the Experiment object that is initialized in runner.js.
+// The experiment's timeline and trials live here.
+
+// Stimuli are defined in data/stimuli.json. This file is loaded by runner.js.
+// The contents of this file are passed to the params variable of the
+// Experiment object.
+
+function Experiment(params, firebaseStorage) {
+
+    /******************
+     * Experiment flow
+     ******************/
+
+    // Initialize the experiment timeline
     var timeline = [];
 
-    var exptParams = {
+    // Function to be called by jsPsych at the very end of the experiment
+    this.onFinish = function() {
+      // TODO: Add redirect
+    }
+
+
+    /******************
+     * Data storage
+     ******************/
+
+    // Initialize a variable to store participant information
+    // TODO: Add more participant parameters here if needed.
+    var participant = {
+      id: params.participantId
+    }
+
+    // Initialize a variable to store experiment information
+    // TODO: Add more experiment parameters here if needed.
+    var experimentData = {
       test: (params.list == "test" ? true : false),
       conditions: params.experimental_conditions.concat(params.subexperiment_conditions).concat(params.filler_conditions),
       list: params.list
     }
 
-    /** The current subject.
-     * @type {object}
-     * @param {string} id - The subject's Worker ID or SONA subject number.
-    */
-    var subject = { //NOTE: Add more subject parameters here if needed.
-      id: params.id
-    }
-
-    /** Return the subject's ID.
-     * @returns {string} - The subject's Worker ID or SONA subject number.
-    */
-    this.getSubjectId = function() {
-      return subject.id;
-    }
-
-    /** Return the experiment timeline.
-     * @returns {array} - The experiment timeline.
-    */
-    this.getTimeline = function() {
-      return timeline;
-    }
-
-    /** Add data to jsPsych's internal representation of the experiment. Can be called at any time.
-    */
+    // This function adds data to jsPsych's internal representation of the
+    // experiment. Can be called at any time.
     this.addPropertiesTojsPsych = function () {
       jsPsych.data.addProperties({
-        subject: subject.id,
-        list: exptParams.list,
-        language: params.lang
+        participant: participant.id,
+        list: experimentData.list
       });
     }
 
-    /** This function handles setting up the experimental trials.
-        Trials consitist of
+    this.setStorageLocation = function() {
+
+      var currentDate = new Date();
+      var prettyDate = [currentDate.getFullYear(),
+                        currentDate.getMonth() + 1,
+                        currentDate.getDate()].join('-');
+
+      filename = experimentData.id + prettyDate + '/' + participant.id + '.csv'
+      experimentData.storageLocation = firebaseStorage.ref().child(filename);
+
+    }
+
+
+    /**************************************************************************
+    * BUILD THE TIMELINE
+    ***************************************************************************/
+
+    // This function builds the full experiment timeline using your individual
+    // init functions. By building different phases of the experiment with their
+    // own init functions, it is easy to turn on and off different parts of the
+    // experiment during testing.
+
+    this.createTimeline = function() {
+
+      // initPreExperiment();
+
+      var start = {
+        "type": "instructions",
+        "key_forward": " ",
+        "show_clickable_nav": false,
+        "allow_backward": false,
+        "pages": params.instructions.start,
+        "on_finish": function(start) {
+            Jeeliz.toggle();
+        }
+      };
+
+      timeline.push(start);
+
+      if(experimentData.test) {
+        initMockTrials();
+      }
+      else { initTrials(); }
+
+      initPostExperiment();
+
+    }
+
+
+    /******************
+     * Getter functions
+     ******************/
+
+    this.getParticipantId = function() { // Return current participant's ID
+      return participant.id;
+    }
+    this.getExperimentId = function() {  // Return experiment's ID
+      return experimentData.id;
+    }
+    this.getTimeline = function() {      // Return the timeline
+      return timeline;
+    }
+
+
+    /************************************************************************
+    * EXPERIMENT BLOCKS
+    *************************************************************************/
+
+    /***************************
+    * Pre-experiment
+    ****************************/
+
+    // TODO: Currently a placeholder
+    var initPreExperiment = function() {
+
+      var welcome = {
+          type: "html-keyboard-response",
+          stimulus: "<p>ようこそ。</p>"
+      };
+
+      timeline.push(welcome);
+
+    }
+
+    /***************************
+    * Trials
+    ****************************/
+
+    // This is the main function used to create a set of trials.
+    var initTrials = function() {
+
+      var list = params.item_list[experimentData.list-1];
+      var stimuli = _.zip(list.id, list.audio, list.condition, list.experiment);
+
+      timeline.push({
+        "stimulus": "",
+        "type": "html-keyboard-response",
+        "prompt": params.instructions.circle_text,
+        "trial_duration": 2000,
+        "choices": jsPsych.NO_KEYS
+      });
+
+      _.each(stimuli, function(stimulus, i) {
+        var trial = makeTrial(_.object(["id", "audio", "condition", "experiment"], stimulus), i);
+        if(trial) { timeline.push(trial); }
+      });
+
+    }
+
+    // Function for creating a set of dummy test trials
+    var initMockTrials = function() {
+      var conditions = experimentData.conditions;
+      _.each(conditions, function(condition, i) {
+        timeline.push(makeMockTrial(condition, i));
+      })
+    }
+
+    /* Creates a single experimental trial
+     * Trials consitist of
           1. A fixation point
           2. An audio stimulus
           3. A likert scale
-    **/
-
+    */
     var makeTrial = function(stimulus, i) {
 
       var audio;
@@ -156,33 +274,8 @@
       });
 
     }
-    var initTrials = function() {
 
-      var list = params.item_list[exptParams.list-1];
-      var stimuli = _.zip(list.id, list.audio, list.condition, list.experiment);
-
-      timeline.push({
-        "stimulus": "",
-        "type": "html-keyboard-response",
-        "prompt": params.instructions.circle_text,
-        "trial_duration": 2000,
-        "choices": jsPsych.NO_KEYS
-      });
-
-      _.each(stimuli, function(stimulus, i) {
-        var trial = makeTrial(_.object(["id", "audio", "condition", "experiment"], stimulus), i);
-        if(trial) { timeline.push(trial); }
-      });
-
-    }
-
-    var initMockTrials = function() {
-      var conditions = exptParams.conditions;
-      _.each(conditions, function(condition, i) {
-        timeline.push(makeMockTrial(condition, i));
-      })
-    }
-
+    // Creates a single dummy trial
     var makeMockTrial = function(condition, i) {
       return ({
         "type": "html-keyboard-response",
@@ -265,61 +358,23 @@
       });
     }
 
-    /** Build the experiment.
-    */
-    this.createTimeline = function() {
-      //initPreamble();
 
-      var start = {
-        "type": "instructions",
-        "key_forward": " ",
-        "show_clickable_nav": false,
-        "allow_backward": false,
-        "pages": params.instructions.start,
-        "on_finish": function(start) {
-            Jeeliz.toggle();
-        }
-      };
+    /***************************
+    * Post-experiment
+    ****************************/
 
-      timeline.push(start);
-
-      if(exptParams.test) {
-        initMockTrials();
-      }
-      else { initTrials(); }
-
-    var end = {
-        "type": "instructions",
-        "timeline": [
-        {
-          "key_forward": "S",
-          "show_clickable_nav": false,
-          "allow_backward": false,
-          "pages": params.instructions.savePupil,
-          on_finish: function() {
-            Jeeliz.complete(subject.id, exptParams);
-          }
-        }, {
-          "key_forward": "S",
-          "show_clickable_nav": false,
+    // Use this function to create any trials that should appear after the main
+    // experiment, but BEFORE a redirect.
+    var initPostExperiment = function() {
+      var end = {
+          "type": "instructions",
+            "key_forward": " ",
+          "show_clickable_nav": true,
           "allow_backward": false,
           "pages": params.instructions.saveBehavioral,
-          on_finish: function() {
-            var date = new Date();
+          on_start: function() { saveDataToStorage(jsPsych.data.get().csv(), data.storageLocation) }
+      }
 
-            var month = (date.getMonth() + 1) < 10 ? "0" + (date.getMonth() + 1) : (date.getMonth() + 1);
-            var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-            var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-            var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-
-            var dateString = date.getFullYear() + '' + month + '' + day + '' + hours + '' + minutes;
-            jsPsych.data.get().localSave('csv', dateString + '_behavior-raw_' + 'subj-' + subject.id + '_list-' + exptParams.list + '.csv');
-          }
-        }
-      ]
+      timeline.push(end);
     }
-
-    timeline.push(end);
-  }
-
 };
