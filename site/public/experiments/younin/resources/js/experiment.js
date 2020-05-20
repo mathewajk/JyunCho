@@ -124,10 +124,9 @@ function Experiment(params, firebaseStorage) {
       timeline.push(start);
 
       timeline.push({
-        "stimulus": "<br><p class=\"huge\">聞いてください…</p>",
+        "stimulus": "<br><br><p class=\"huge\">「+」が表示される際にオーディオが再生します。二度と再生できないので、注意深く聞いて下さい。</p>",
         "type": "html-keyboard-response",
-        "prompt": params.instructions.fixation,
-        "trial_duration": 2000,
+        "trial_duration": 5000,
         "choices": jsPsych.NO_KEYS
       });
 
