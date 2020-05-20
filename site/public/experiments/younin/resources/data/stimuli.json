@@ -45,9 +45,8 @@
       "prompt": "<br/><br/><br/><p class=\"text-center huge\"><table class=\"huge\" style=\"text-align: center;\"><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>very unnatural</td><td></td><td></td><td>neither natural nor unnatural</td><td></td><td></td><td>very natural</td></tr></table></p>"
     },
     "instructions": {
-      "start": ["<p class=\"huge\">この実験では、色々な短い文を聞きます。</p><p class=\"huge\">文を聞いた後, その自然度を評価します。</p><p class=\"huge\">自然な文というのは、自分や知り合いが言えそうな、または、周りから聞きそうな文です。不自然な文は、「その言い方はちょっと…」「そういう風には言わないね」と思わせる、または、非文法的な・慣用的でない文です。学校で習ったルールなどを出来るだけ気にせず、ただ、自分にとってどれほど自然・不自然かを評価してください。</p>", "<p class=\"huge\">実験は20分以下かかります。</p><p class=\"huge\">続くには空白を射ってください。</p>"],
-      "circle_text": "<div class=\"experiment-point\"><br/><br/>Look at<br/>this circle</div>",
-      "savePupil": ["<p class=\"huge\">実験は以上です。 参加してくれて誠にありがとうございます。</p><p class=\"huge\">このウインドーを閉じないで、研究者に報告してください。</p><p class=\"huge\">研究者: データを保存するには 「S」を射ってください。"],
-      "saveBehavioral": []
+      "start": ["<br><br><p class=\"huge\">この実験では、色々な短い「文」を聞きます。文を聞いた後, ぞれぞれの「自然度」を評価します。</p><br><p class=\"huge\">自然な文というのは、自分や自分の知り合いが言えそうな、または、周りから聞きそうな文です。</p><p>不自然な文は、「その言い方はちょっと…」「そういう風には言わないね」と思わせる、または、非文法的な・慣用的でない文です。</p><br><p>学校で学んだルールなどを出来るだけ気にせず、ただ、個人的にどれほど自然・不自然かを考えてください。</p>", "<br><br><p class=\"huge\">この実験は20分ぐらいかかります。</p><p class=\"huge\">続くにはスペースキーを押してください。</p>"],
+      "fixation": "<br><br><p><span style=\"font-size: 48px;\">+</span></p><br><p class=\"huge\">聞いてください。</p>",
+      "thankYou": ["<p class=\"huge\">実験は以上です。 参加してくれて誠にありがとうございます。</p><p class=\"huge\">このウインドーを閉じないで、研究者に報告してください。</p><p class=\"huge\">研究者: データを保存するには 「S」を射ってください。"]
     }
 }
