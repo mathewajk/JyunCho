@@ -1,7 +1,26 @@
 {
-  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
   "rules": {
+
     ".read": false,
-    ".write": false
+    ".write": false,
+
+    "youninsei": {
+
+      "participants": {
+        ".read": true,
+        ".write": true,
+        "$participant": {
+          ".validate": "newData.hasChildren(['started', 'completed']) && newData.child('started').isBoolean() && newData.child('completed').isBoolean()"
+        }
+      },
+
+      "data": {
+        ".read": false,
+        ".write": true,
+        "$participant": {
+        }
+      }
+
+    }
   }
 }
