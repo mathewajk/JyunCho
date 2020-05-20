@@ -38,7 +38,8 @@ function Experiment(params, firebaseStorage) {
       test: (params.list == "test" ? true : false),
       conditions: params.experimental_conditions.concat(params.subexperiment_conditions).concat(params.filler_conditions),
       list: params.list,
-      version: params.version
+      version: params.version,
+      code: jsPsych.randomization.randomID(15)
     }
 
     // This function adds data to jsPsych's internal representation of the
@@ -47,7 +48,8 @@ function Experiment(params, firebaseStorage) {
       jsPsych.data.addProperties({
         participant: participant.id,
         list: experimentData.list,
-        version: experimentData.version
+        version: experimentData.version,
+        code: experimentData.code
       });
     }
 
@@ -350,14 +352,14 @@ function Experiment(params, firebaseStorage) {
 
       var end = {
         "type": "instructions",
-        "key_forward": " ",
+        "key_forward": "",
         "show_clickable_nav": false,
         "allow_backward": false,
         on_start: function() { saveDataToStorage(jsPsych.data.get().csv(), experimentData.storageLocation) }
       }
 
       if(experimentData.version == "online") {
-        end.pages = params.instructions.thankYouOnline
+        end.pages = [params.instructions.thankYouOnline[0] + "<p class=\"huge\">確認コード：</p>" + experimentData.code]
       } else if (version == "offline") {
         end.pages = params.instructions.thankYouOffline
       }
