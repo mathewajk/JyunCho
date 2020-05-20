@@ -91,6 +91,6 @@ function showUserError() {
   $( '#jspsych-target' ).append($('<div>', {
      id: 'error',
      class: 'text-center',
-     html: '<p>It appears that you have previously completed a study that used the same data as, or similar data to, the study you are attempting to complete now. Unfortunately, we cannot allow the same person to participate in an experiment more than once. We apologize for the inconvenience, but we must ask that you return your HIT now. (This will not negatively impact your ability to participate in future experiments.)</p><p>If you believe that this message is in error, you can contact the lab at <a href="mailto:arkram@umich.edu">arkram@umich.edu</a>.</div>'
+     html: '<p>申し訳ありませんが、データベースによると、お使いのアカウントは既にこの研究に参加しているようです。</p><p>参加した覚えがない場合は<a href="mailto:arkram@umich.edu">arkram@umich.edu</a>にご連絡ください。</div>'
    }));
 }
