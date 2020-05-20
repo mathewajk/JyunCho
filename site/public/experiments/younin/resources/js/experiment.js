@@ -80,10 +80,7 @@ function Experiment(params, firebaseStorage) {
         "key_forward": " ",
         "show_clickable_nav": false,
         "allow_backward": false,
-        "pages": params.instructions.start,
-        "on_finish": function(start) {
-            Jeeliz.toggle();
-        }
+        "pages": params.instructions.start
       };
 
       timeline.push(start);
