@@ -143,7 +143,7 @@ function Experiment(params, firebaseStorage) {
       timeline.push({
         "stimulus": "",
         "type": "html-keyboard-response",
-        "prompt": params.instructions.circle_text,
+        "prompt": params.instructions.fixation,
         "trial_duration": 2000,
         "choices": jsPsych.NO_KEYS
       });
@@ -185,9 +185,6 @@ function Experiment(params, firebaseStorage) {
         "type": "html-keyboard-response",
         "timeline": [
           {
-            on_start: function(trial) {
-              ExperimentRecorder.addEvent(stimulus.condition);
-            },
             "stimulus": "",
             "prompt": "<div class='experiment-point'></div>",
             "trial_duration": 1000,
@@ -237,9 +234,6 @@ function Experiment(params, firebaseStorage) {
             }
           },
           {
-            on_start: function(trial) {
-              ExperimentRecorder.addEvent("Response");
-            },
             "type": "html-keyboard-response",
             "stimulus": params.trial_instructions.stimulus,
             "prompt": params.trial_instructions.prompt,
@@ -278,11 +272,9 @@ function Experiment(params, firebaseStorage) {
         "type": "html-keyboard-response",
         "timeline": [
           {
-            on_start: function(trial) {
-              ExperimentRecorder.addEvent(condition);
-            },
             "stimulus": "",
-            "prompt": params.instructions.circle_text,
+            "type": "html-keyboard-response",
+            "prompt": params.instructions.fixation,
             "trial_duration": 500,
             "choices": jsPsych.NO_KEYS,
             on_finish: function(){
@@ -299,7 +291,7 @@ function Experiment(params, firebaseStorage) {
           {
             "type": "audio-keyboard-response",
             "stimulus": 'resources/sound/beep.wav',
-            "prompt": params.instructions.circle_text,
+            "prompt": params.instructions.fixation,
             "trial_ends_after_audio": true,
             "choices": jsPsych.NO_KEYS,
             on_finish: function(){
@@ -315,7 +307,7 @@ function Experiment(params, firebaseStorage) {
           },
           {
             "stimulus": "",
-            "prompt": params.instructions.circle_text,
+            "prompt": params.instructions.fixation,
             "trial_duration": 500,
             "choices": jsPsych.NO_KEYS,
             on_finish: function(){
@@ -330,9 +322,6 @@ function Experiment(params, firebaseStorage) {
             }
           },
           {
-            on_start: function(trial) {
-              ExperimentRecorder.addEvent("RESP");
-            },
             "type": "html-keyboard-response",
             "stimulus": params.trial_instructions.stimulus,
             "prompt": params.trial_instructions.prompt,
