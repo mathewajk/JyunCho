@@ -41,12 +41,13 @@
       "fillers": "resources/sound/japanese/fillers/"
     },
     "trial_instructions": {
-      "stimulus": "<p class=\"text-center huge\">聞いた文の自然度をキーボード（１〜７）で評価してください。</p>",
-      "prompt": "<br/><br/><br/><p class=\"text-center huge\"><table class=\"huge\" style=\"text-align: center;\"><tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td></tr><tr><td>very unnatural</td><td></td><td></td><td>neither natural nor unnatural</td><td></td><td></td><td>very natural</td></tr></table></p>"
+      "stimulus": "<p class=\"text-center huge\">キーボード（１〜７）を使って先の文の自然度を評価してください。</p>",
+      "prompt": "<div class=\"huge pure-g\"><div class=\"pure-u-5-24\"><p></p></div><div class=\"pure-u-2-24\"><p>1</p><p>全然自然ではない</p></div><div class=\"pure-u-2-24\"><p>2</p></div><div class=\"pure-u-2-24\"><p>3</p></div><div class=\"pure-u-2-24\"><p>4</p><p>まあまあ</p></div><div class=\"pure-u-2-24\"><p>5</p></div><div class=\"pure-u-2-24\"><p>6</p></div><div class=\"pure-u-2-24\"><p>7</p><p>完璧</p></div><div class=\"pure-u-5-24\"><p></p></div></div>"
     },
     "instructions": {
       "start": ["<br><br><p class=\"huge\">この実験では、色々な短い「文」を聞きます。文を聞いた後, ぞれぞれの「自然度」を評価します。</p><br><p class=\"huge\">自然な文というのは、自分や自分の知り合いが言えそうな、または、周りから聞きそうな文です。</p><p>不自然な文は、「その言い方はちょっと…」「そういう風には言わないね」と思わせる、または、非文法的な・慣用的でない文です。</p><br><p>学校で学んだルールなどを出来るだけ気にせず、ただ、個人的にどれほど自然・不自然かを考えてください。</p>", "<br><br><p class=\"huge\">この実験は20分ぐらいかかります。</p><p class=\"huge\">続くにはスペースキーを押してください。</p>"],
-      "fixation": "<br><br><p><span style=\"font-size: 48px;\">+</span></p><br><p class=\"huge\">聞いてください。</p>",
-      "thankYou": ["<p class=\"huge\">実験は以上です。 参加してくれて誠にありがとうございます。</p><p class=\"huge\">このウインドーを閉じないで、研究者に報告してください。</p><p class=\"huge\">研究者: データを保存するには 「S」を射ってください。"]
+      "fixation": "<br><br><p><span style=\"font-size: 48px;\">+</span></p>",
+      "thankYouOffline": ["<p class=\"huge\">実験は以上です。 参加してくださって誠にありがとうございます。</p><p class=\"huge\">参加を確認するには, cloudworksに戻ってフォームに以下のコードを入力して下さい。</p><p class=\"huge\">確認コード:</p>"],
+      "thankYouOnline": ["<p class=\"huge\">実験は以上です。 参加してくださって誠にありがとうございます。</p><p class=\"huge\">このウインドウを閉じないで、研究者にご報告ください。</p><p class=\"huge\">研究者: データを保存するには 「S」を押してください。"]
     }
 }

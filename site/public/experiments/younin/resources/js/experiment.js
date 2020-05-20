@@ -37,7 +37,8 @@ function Experiment(params, firebaseStorage) {
     var experimentData = {
       test: (params.list == "test" ? true : false),
       conditions: params.experimental_conditions.concat(params.subexperiment_conditions).concat(params.filler_conditions),
-      list: params.list
+      list: params.list,
+      version: params.version
     }
 
     // This function adds data to jsPsych's internal representation of the
@@ -45,7 +46,8 @@ function Experiment(params, firebaseStorage) {
     this.addPropertiesTojsPsych = function () {
       jsPsych.data.addProperties({
         participant: participant.id,
-        list: experimentData.list
+        list: experimentData.list,
+        version: experimentData.version
       });
     }
 
@@ -73,17 +75,7 @@ function Experiment(params, firebaseStorage) {
 
     this.createTimeline = function() {
 
-      // initPreExperiment();
-
-      var start = {
-        "type": "instructions",
-        "key_forward": " ",
-        "show_clickable_nav": false,
-        "allow_backward": false,
-        "pages": params.instructions.start
-      };
-
-      timeline.push(start);
+      initPreExperiment();
 
       if(experimentData.test) {
         initMockTrials();
@@ -121,12 +113,23 @@ function Experiment(params, firebaseStorage) {
     // TODO: Currently a placeholder
     var initPreExperiment = function() {
 
-      var welcome = {
-          type: "html-keyboard-response",
-          stimulus: "<p>ようこそ。</p>"
+      var start = {
+        "type": "instructions",
+        "key_forward": " ",
+        "show_clickable_nav": false,
+        "allow_backward": false,
+        "pages": params.instructions.start
       };
 
-      timeline.push(welcome);
+      timeline.push(start);
+
+      timeline.push({
+        "stimulus": "<br><p class=\"huge\">聞いてください…</p>",
+        "type": "html-keyboard-response",
+        "prompt": params.instructions.fixation,
+        "trial_duration": 2000,
+        "choices": jsPsych.NO_KEYS
+      });
 
     }
 
@@ -139,14 +142,6 @@ function Experiment(params, firebaseStorage) {
 
       var list = params.item_list[experimentData.list-1];
       var stimuli = _.zip(list.id, list.audio, list.condition, list.experiment);
-
-      timeline.push({
-        "stimulus": "",
-        "type": "html-keyboard-response",
-        "prompt": params.instructions.fixation,
-        "trial_duration": 2000,
-        "choices": jsPsych.NO_KEYS
-      });
 
       _.each(stimuli, function(stimulus, i) {
         var trial = makeTrial(_.object(["id", "audio", "condition", "experiment"], stimulus), i);
@@ -290,7 +285,8 @@ function Experiment(params, firebaseStorage) {
           },
           {
             "type": "audio-keyboard-response",
-            "stimulus": 'resources/sound/beep.wav',
+            "stimulus": '',
+            "trial_duration": 500,
             "prompt": params.instructions.fixation,
             "trial_ends_after_audio": true,
             "choices": jsPsych.NO_KEYS,
@@ -352,15 +348,22 @@ function Experiment(params, firebaseStorage) {
     // Use this function to create any trials that should appear after the main
     // experiment, but BEFORE a redirect.
     var initPostExperiment = function() {
+
       var end = {
-          "type": "instructions",
-            "key_forward": " ",
-          "show_clickable_nav": true,
-          "allow_backward": false,
-          "pages": params.instructions.saveBehavioral,
-          on_start: function() { saveDataToStorage(jsPsych.data.get().csv(), data.storageLocation) }
+        "type": "instructions",
+        "key_forward": " ",
+        "show_clickable_nav": false,
+        "allow_backward": false,
+        on_start: function() { saveDataToStorage(jsPsych.data.get().csv(), experimentData.storageLocation) }
+      }
+
+      if(experimentData.version == "online") {
+        end.pages = params.instructions.thankYouOnline
+      } else if (version == "offline") {
+        end.pages = params.instructions.thankYouOffline
       }
 
       timeline.push(end);
+
     }
 };
